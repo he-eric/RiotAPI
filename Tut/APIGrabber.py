@@ -1,53 +1,47 @@
-#This tutorial was built by me, Farzain! You can ask me questions or troll me on Twitter (@farzatv)
-
-#First we need to import requests. Installing this is a bit tricky. I included a step by step process on how to get requests in readme.txt which is included in the file along with this program.
 import requests
+import RiotConsts as Consts
 
+# Request summoner data 
 def requestSummonerData(region, summonerName, APIKey):
 
-    #Here is how I make my URL.  There are many ways to create these.
-    #https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/Yabaschu?api_key=RGAPI-97b13c39-2072-498e-9fb6-385c314d7cf6
-    URL = "https://" + region + ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" + summonerName + "?api_key=" + APIKey
-    print URL
-    #requests.get is a function given to us my our import "requests". It basically goes to the URL we made and gives us back a JSON.
+    # Format the URL to correctly reflect variable names region, version, name, apikey
+    URL = Consts.summoner
+    URL = URL.format(region=region, version=Consts.version, name=summonerName, api_key=APIKey)
+    
+    # Requests.get is a function given to us my our import "requests". It basically goes to the URL we made and gives us back a JSON.
     response = requests.get(URL)
-    #Here I return the JSON we just got.
+    
     return response.json()
 
+# Request ranked data
 def requestRankedData(region, ID, APIKey):
-    #https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/yabaschu?api_key=RGAPI-97b13c39-2072-498e-9fb6-385c314d7cf6
-    URL = "https://" + region + ".api.riotgames.com/lol/league/v3/positions/by-summoner/" + ID + "?api_key=" + APIKey
-    print URL
+    
+    URL = Consts.league
+    URL = URL.format(region=region, version=Consts.version, id=ID, api_key=APIKey)
+    
     response = requests.get(URL)
     return response.json()
+
+# Request match history with accountID
+def request_match_history(region, accountID, APIKey):
     
+    URL = Consts.match
+    URL = URL.format(region=region, version=Consts.version, accountID=accountID, api_key=APIKey)
+
+    response = requests.get(URL)
+    return response.json()
+
+# Request game history with game id
+def request_game_history(region, matchID, APIKey):
+    
+    URL = Consts.game
+    URL = URL.format(region=region, version=Consts.version, matchid=matchID, api_key=APIKey)
+    
+    response = requests.get(URL)
+    return response.json()
 
 def main():
-    print "\nWhat up homie. Enter your region to get started"
-    print "Type in one of the following regions or else the program wont work correctly:\n"
-    print "NA or EUW (Note: You can add more regions by just changing up the URL!\n"
-
-    #I first ask the user for three things, their region, summoner name, and API Key.
-    #These are the only three things I need from them in order to get create my URL and grab their ID.
-
-    region = (str)(raw_input('Type in one of the regions above: '))
-    summonerName = (str)(raw_input('Type your Summoner Name here and DO NOT INCLUDE ANY SPACES: '))
-    APIKey = (str)(raw_input('Copy and paste your API Key here: '))
-
-    #I send these three pieces off to my requestData function which will create the URL and give me back a JSON that has the ID for that specific summoner.
-    #Once again, what requestData returns is a JSON.
-    responseJSON  = requestSummonerData(region, summonerName, APIKey)
-    
-    ID = responseJSON["id"]
-    ID = str(ID)
-    print ID
-    responseJSON2 = requestRankedData(region, ID, APIKey)
-    print responseJSON2[0]["tier"] + " " + responseJSON2[0]["rank"]
-    print responseJSON2[0]["leaguePoints"]
-    #URL = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/Yabaschu?api_key=RGAPI-97b13c39-2072-498e-9fb6-385c314d7cf6'
-    #response = requests.get(URL)
-    #responseJSON = response.json()
-    #print responseJSON["name"]
+    print "main"
 
 #This starts my program!
 if __name__ == "__main__":
