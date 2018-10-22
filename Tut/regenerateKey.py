@@ -1,9 +1,10 @@
-import RiotConsts as Consts
+import APIKey as Consts
 
 def main():
-    f = open("RiotConsts.py", "w")
+    file = open("APIKey.py", "w")
     key = raw_input("New API key: ")
-    f.write(key)
+    key = 'APIKey = "' + key + '"' 
+    file.write(key)
 
 if __name__ == "__main__":
     main()
